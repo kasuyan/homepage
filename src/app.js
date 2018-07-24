@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 // import { BrowserRouter as Router, Route } from 'react-router-dom';
 // import './style.css';
 
@@ -13,10 +13,9 @@ import React from 'react';
 export default class App extends React.Component {
   render() {
     return (
-        <div className="container">
-            <h1>ようこそ！</h1>
-        </div>
+      <div className="container">
+        <h1>ようこそ！</h1>
+      </div>
     );
   }
 }
-
