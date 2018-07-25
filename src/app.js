@@ -14,7 +14,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div className="container">
-        <h1>ようこそ！</h1>
+        <h1>ようこそ！{`環境は${process.env.HOST}です`}</h1>
       </div>
     );
   }

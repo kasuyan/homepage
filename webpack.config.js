@@ -1,13 +1,17 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const env = require("dotenv").config();
+
+const isProd = process.env.HOST === "production";
+console.log("isProd=", isProd);
 
 module.exports = {
-  mode: "development",
+  mode: isProd ? "production" : "development",
   entry: {
     module: "./src/index.js"
   },
   output: {
     path: __dirname + "/dist/",
-    filename: "js/main.js"
+    filename: isProd ? "./js/main.js" : "js/main.js"
   },
   module: {
     rules: [
