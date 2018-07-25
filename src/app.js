@@ -1,20 +1,26 @@
 import React from "react";
-// import { BrowserRouter as Router, Route } from 'react-router-dom';
-// import './style.css';
-
-// import Home from './components/pages/home';
-// import Page1 from './components/pages/page1';
-// import Page2 from './components/pages/page2';
-// import Dentaku from './components/project/dentaku';
-
-// import Header from './components/project/header';
-// import Nav from './components/project/nav';
 
 export default class App extends React.Component {
   render() {
     return (
       <div className="container">
-        <h1>ようこそ！{`環境は${process.env.HOST}です`}</h1>
+        <h1>ようこそ！</h1>
+        <p>{`現在の環境は${process.env.HOST}です`}</p>
+
+        <h2>TODOリスト</h2>
+        <ul>
+          <li>typeScrptの導入</li>
+          <li>eslintの導入</li>
+          <li>cssの導入</li>
+          <li>stylelintの導入</li>
+          <li>ページ遷移</li>
+          <li>コンポーネントの構成</li>
+          <li>styled-componentsの導入</li>
+          <li>pwa化</li>
+          <li>画像の導入</li>
+          <li>gh-pagesの導入</li>
+          <li>reduxの導入</li>
+        </ul>
       </div>
     );
   }
