@@ -9,21 +9,27 @@ const isProd = process.env.NODE_ENV === "production";
 module.exports = {
   mode: isProd ? "production" : "development",
   entry: {
-    module: "./src/index.js"
+    module: "./src/index.tsx"
   },
   output: {
     path: __dirname + "/dist/",
     filename: isProd ? "./js/main.js" : "js/main.js"
   },
+  devtool: "source-map",
+  resolve: {
+    extensions: [".ts", ".tsx", ".js", ".jsx"]
+  },
   module: {
     rules: [
-      {
-        test: /\.(js|jsx)$/,
-        use: {
-          loader: "babel-loader"
-        },
-        exclude: /node_modules/
-      }
+      { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
+      { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
+      // {
+      //   test: /\.(js|jsx)$/,
+      //   use: {
+      //     loader: "babel-loader"
+      //   },
+      //   exclude: /node_modules/
+      // }
     ]
   },
   plugins: [
