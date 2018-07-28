@@ -2,7 +2,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const env = require("dotenv").config();
 
 const isProd = process.env.NODE_ENV === "production";
-// console.log("process.env.HOST=", process.env.HOST);
+console.log("process.env.HOST=", process.env.HOST);
 // console.log("isProd=", isProd);
 // console.log("process.env.NODE_ENV", process.env.NODE_ENV);
 

@@ -5,9 +5,10 @@
     // ソースマップを有効にする
     "sourceMap": true,
     "noImplicitAny": true,
-    "module": "commonjs",
+    "module": "esnext",
+    "moduleResolution": "node",
     "target": "es5",
     "jsx": "react"
   },
-  "include": ["./src/*", "./src/**/**/**/*"]
+  "include": ["./src/*"]
 }

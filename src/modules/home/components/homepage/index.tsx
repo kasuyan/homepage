@@ -1,11 +1,12 @@
 import * as React from "react";
 
-export default class App extends React.Component {
+class HomePage extends React.Component {
   render() {
+    console.log("process.env.HOST", process.env);
     return (
-      <div className="container">
+      <div>
         <h1>ようこそ！</h1>
-        <p>現在の環境は*****です</p>
+        <p>現在の環境は{process.env.HOST}です！</p>
         <h2>TODOリスト</h2>
         <ul>
           <li>
@@ -28,3 +29,5 @@ export default class App extends React.Component {
     );
   }
 }
+
+export default HomePage;

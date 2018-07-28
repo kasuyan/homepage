@@ -857,6 +857,201 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 /***/ }),
 
+/***/ "./node_modules/process/browser.js":
+/*!*****************************************!*\
+  !*** ./node_modules/process/browser.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
+
 /***/ "./node_modules/prop-types/checkPropTypes.js":
 /*!***************************************************!*\
   !*** ./node_modules/prop-types/checkPropTypes.js ***!
@@ -19990,34 +20185,41 @@ if (false) {} else {
 /*!***********************!*\
   !*** ./src/index.tsx ***!
   \***********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _modules_core_components_App_app__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/core/components/App/app */ "./src/modules/core/components/App/app.tsx");
 
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+
 //import { createStore } from 'redux';
 //import { Provider } from 'react-redux';
 //import reducer from './reducers/dentaku';
-var app_1 = __webpack_require__(/*! ./modules/core/App/app */ "./src/modules/core/App/app.tsx");
+
 //const store = createStore(reducer);
-ReactDOM.render(React.createElement(app_1.default, null), document.getElementById("root"));
+react_dom__WEBPACK_IMPORTED_MODULE_1__["render"](react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_modules_core_components_App_app__WEBPACK_IMPORTED_MODULE_2__["default"], null), document.getElementById("root"));
 
 
 /***/ }),
 
-/***/ "./src/modules/core/App/app.tsx":
-/*!**************************************!*\
-  !*** ./src/modules/core/App/app.tsx ***!
-  \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./src/modules/core/components/App/app.tsx":
+/*!*************************************************!*\
+  !*** ./src/modules/core/components/App/app.tsx ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-var __extends = (this && this.__extends) || (function () {
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _home_components_homepage_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../home/components/homepage/index */ "./src/modules/home/components/homepage/index.tsx");
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
         function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
@@ -20027,36 +20229,79 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+
 var App = /** @class */ (function (_super) {
     __extends(App, _super);
     function App() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     App.prototype.render = function () {
-        return (React.createElement("div", { className: "container" },
-            React.createElement("h1", null, "\u3088\u3046\u3053\u305D\uFF01"),
-            React.createElement("p", null, "\u73FE\u5728\u306E\u74B0\u5883\u306F***\u3067\u3059"),
-            React.createElement("h2", null, "TODO\u30EA\u30B9\u30C8"),
-            React.createElement("ul", null,
-                React.createElement("li", null, "typeScrpt\u306E\u5C0E\u5165"),
-                React.createElement("li", null, "eslint\u306E\u5C0E\u5165"),
-                React.createElement("li", null, "css\u306E\u5C0E\u5165"),
-                React.createElement("li", null, "stylelint\u306E\u5C0E\u5165"),
-                React.createElement("li", null, "react-router\u5C0E\u5165"),
-                React.createElement("li", null, "\u30B3\u30F3\u30DD\u30FC\u30CD\u30F3\u30C8\u306E\u69CB\u6210"),
-                React.createElement("li", null, "styled-components\u306E\u5C0E\u5165"),
-                React.createElement("li", null, "pwa\u5316\uFF11"),
-                React.createElement("li", null, "\u753B\u50CF\u306E\u5C0E\u5165"),
-                React.createElement("li", null,
-                    React.createElement("s", null, "gh-pages\u306E\u5C0E\u5165")),
-                React.createElement("li", null, "redux\u306E\u5C0E\u5165"))));
+        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "container" },
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_home_components_homepage_index__WEBPACK_IMPORTED_MODULE_1__["default"], null)));
     };
     return App;
-}(React.Component));
-exports.default = App;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]));
+/* harmony default export */ __webpack_exports__["default"] = (App);
 
+
+/***/ }),
+
+/***/ "./src/modules/home/components/homepage/index.tsx":
+/*!********************************************************!*\
+  !*** ./src/modules/home/components/homepage/index.tsx ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(process) {/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+var HomePage = /** @class */ (function (_super) {
+    __extends(HomePage, _super);
+    function HomePage() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    HomePage.prototype.render = function () {
+        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null, "\u3088\u3046\u3053\u305D\uFF01"),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", null,
+                "\u73FE\u5728\u306E\u74B0\u5883\u306F",
+                process.env.HOST,
+                "\u3067\u3059\uFF01"),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h2", null, "TODO\u30EA\u30B9\u30C8"),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("ul", null,
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null,
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("s", null, "typeScrpt\u306E\u5C0E\u5165")),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null, "eslint\u306E\u5C0E\u5165"),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null, "css\u306E\u5C0E\u5165"),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null, "stylelint\u306E\u5C0E\u5165"),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null, "react-router\u5C0E\u5165"),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null, "\u30B3\u30F3\u30DD\u30FC\u30CD\u30F3\u30C8\u306E\u69CB\u6210"),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null, "styled-components\u306E\u5C0E\u5165"),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null, "pwa\u5316"),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null, "\u753B\u50CF\u306E\u5C0E\u5165"),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null,
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("s", null, "gh-pages\u306E\u5C0E\u5165")),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null, "redux\u306E\u5C0E\u5165"))));
+    };
+    return HomePage;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]));
+/* harmony default export */ __webpack_exports__["default"] = (HomePage);
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../node_modules/process/browser.js */ "./node_modules/process/browser.js")))
 
 /***/ })
 
