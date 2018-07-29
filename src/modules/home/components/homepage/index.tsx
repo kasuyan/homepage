@@ -15,7 +15,9 @@ class HomePage extends React.Component {
           <li>eslintの導入</li>
           <li>cssの導入</li>
           <li>stylelintの導入</li>
-          <li>react-router導入</li>
+          <li>
+            <s>react-router導入</s>
+          </li>
           <li>コンポーネントの構成</li>
           <li>styled-componentsの導入</li>
           <li>pwa化</li>
