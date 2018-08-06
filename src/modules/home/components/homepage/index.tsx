@@ -20,6 +20,7 @@ class HomePage extends React.Component {
           </li>
           <li>コンポーネントの構成</li>
           <li>styled-componentsの導入</li>
+          <li>story-bookの導入</li>
           <li>pwa化</li>
           <li>画像の導入</li>
           <li>
