@@ -41,7 +41,7 @@ class GlobalNav extends React.Component {
             <a href="/dialy">Dialy</a>
           </ListItem>
           <ListItem>
-            <a href="/contents">Contents</a>
+            <ListItemLink to="/gallery">Gallery</ListItemLink>
           </ListItem>
           <ListItem>
             <a href="/bbs">BBS</a>

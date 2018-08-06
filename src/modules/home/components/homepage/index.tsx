@@ -19,7 +19,9 @@ class HomePage extends React.Component {
             <s>react-router導入</s>
           </li>
           <li>コンポーネントの構成</li>
-          <li>styled-componentsの導入</li>
+          <li>
+            <s>styled-componentsの導入</s>
+          </li>
           <li>story-bookの導入</li>
           <li>pwa化</li>
           <li>画像の導入</li>

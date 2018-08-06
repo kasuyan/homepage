@@ -1,39 +1,22 @@
 import * as React from "react";
 import { Switch } from "react-router";
+import styled from "styled-components";
 import { BrowserRouter, Route, Link } from "react-router-dom";
+import GlobalNav from "../../../core/components/designsystem/atoms/GlobalNav/index";
 import HomePage from "../../../home/components/homepage/index";
 import AboutPage from "../../../about/components/aboutpage/index";
+import GalleryPage from "../../../gallery/components/gallerypage/index";
 
 export default class App extends React.Component {
   render() {
     return (
       <BrowserRouter>
-        <div className="container">
-          <nav>
-            <ul>
-              <li>
-                <Link to="/">TOP</Link>
-              </li>
-              <li>
-                <Link to="/about">About</Link>
-              </li>
-              <li>
-                <a href="/dialy">Dialy</a>
-              </li>
-              <li>
-                <a href="/contents">Contents</a>
-              </li>
-              <li>
-                <a href="/bbs">BBS</a>
-              </li>
-              <li>
-                <a href="/link">Link</a>
-              </li>
-            </ul>
-          </nav>
+        <div>
+          <GlobalNav />
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route path="/about" component={AboutPage} />
+            <Route path="/gallery" component={GalleryPage} />
           </Switch>
         </div>
       </BrowserRouter>
