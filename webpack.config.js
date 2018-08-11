@@ -1,8 +1,10 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const history = require("connect-history-api-fallback");
+const convert = require("koa-connect");
 const env = require("dotenv").config();
 
 const isProd = process.env.NODE_ENV === "production";
-console.log("process.env.HOST=", process.env.HOST);
+
 // console.log("isProd=", isProd);
 // console.log("process.env.NODE_ENV", process.env.NODE_ENV);
 
@@ -12,6 +14,7 @@ module.exports = {
     module: "./src/index.tsx"
   },
   output: {
+    publicPath: "/",
     path: __dirname + "/dist/",
     filename: isProd ? "./js/main.js" : "js/main.js"
   },
@@ -30,13 +33,14 @@ module.exports = {
       filename: "index.html",
       template: "./public/index.html"
     })
-  ],
-  devServer: {
-    historyApiFallback: true,
-    contentBase: "dist/",
-    watchContentBase: true,
-    inline: true,
-    host: "127.0.0.1",
-    port: 3001
+  ]
+};
+
+module.exports.serve = {
+  content: [__dirname],
+  add: (app, middleware, options) => {
+    const historyOptions = {};
+
+    app.use(convert(history(historyOptions)));
   }
 };

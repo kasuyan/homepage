@@ -5,7 +5,7 @@ class GalleryPage extends React.Component {
   render() {
     return (
       <section>
-        <PageTitle>ギャラリー</PageTitle>
+        <PageTitle>ギャラリー1</PageTitle>
       </section>
     );
   }

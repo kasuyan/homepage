@@ -6,19 +6,27 @@ class HomePage extends React.Component {
     return (
       <div>
         <h1>ようこそ！</h1>
-        <p>現在の環境は{process.env.HOST}です！</p>
+        <p>
+          現在の環境は
+          {process.env.HOST}
+          です！
+        </p>
         <h2>TODOリスト</h2>
         <ul>
           <li>
             <s>typeScrptの導入</s>
           </li>
-          <li>eslintの導入</li>
+          <li>tslintの導入</li>
           <li>cssの導入</li>
           <li>stylelintの導入</li>
+          <li>nowの導入</li>
+          <li>circleCIの導入</li>
           <li>
             <s>react-router導入</s>
           </li>
-          <li>コンポーネントの構成</li>
+          <li>
+            <s>コンポーネントの構成</s>
+          </li>
           <li>
             <s>styled-componentsの導入</s>
           </li>
