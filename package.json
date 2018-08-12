@@ -9,15 +9,26 @@
   "scripts": {
     "build": "webpack",
     "dev": "webpack-serve --config webpack.config.js --open",
-    "prod": "NODE_ENV=production webpack && gh-pages -d dist"
+    "prod": "NODE_ENV=production webpack && gh-pages -d dist",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^3.4.10",
+    "@storybook/addon-links": "^3.4.10",
+    "@storybook/addon-storysource": "^3.4.10",
+    "@storybook/addons": "^3.4.10",
+    "@storybook/cli": "^3.4.10",
+    "@storybook/react": "4.0.0-alpha.3",
+    "@types/storybook__addon-actions": "^3.4.1",
+    "@types/storybook__react": "^3.0.9",
     "awesome-typescript-loader": "^5.2.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "babel-plugin-inline-dotenv": "^1.1.2",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
+    "babel-runtime": "^6.26.0",
     "connect-history-api-fallback": "^1.5.0",
     "dotenv": "^6.0.0",
     "gh-pages": "^1.2.0",

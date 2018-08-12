@@ -5,7 +5,7 @@ const env = require("dotenv").config();
 
 const isProd = process.env.NODE_ENV === "production";
 
-// console.log("isProd=", isProd);
+console.log("isProd=", isProd);
 // console.log("process.env.NODE_ENV", process.env.NODE_ENV);
 
 module.exports = {
@@ -36,11 +36,13 @@ module.exports = {
   ]
 };
 
-module.exports.serve = {
-  content: [__dirname],
-  add: (app, middleware, options) => {
-    const historyOptions = {};
+if (!isProd) {
+  module.exports.serve = {
+    content: [__dirname],
+    add: (app, middleware, options) => {
+      const historyOptions = {};
 
-    app.use(convert(history(historyOptions)));
-  }
-};
+      app.use(convert(history(historyOptions)));
+    }
+  };
+}
