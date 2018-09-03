@@ -1,10 +1,15 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-//import { createStore } from 'redux';
-//import { Provider } from 'react-redux';
-//import reducer from './reducers/dentaku';
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import globalNavState from "./reducer";
 import App from "./modules/core/components/App/app";
 
-//const store = createStore(reducer);
+const store = createStore(globalNavState);
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("root")
+);

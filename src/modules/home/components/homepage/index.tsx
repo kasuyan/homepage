@@ -2,7 +2,6 @@ import * as React from "react";
 
 class HomePage extends React.Component {
   render() {
-    console.log("process.env.HOST", process.env);
     return (
       <div>
         <h1>ようこそ！</h1>
@@ -36,7 +35,9 @@ class HomePage extends React.Component {
           <li>
             <s>gh-pagesの導入</s>
           </li>
-          <li>reduxの導入</li>
+          <li>
+            <s>reduxの導入</s>
+          </li>
         </ul>
       </div>
     );
