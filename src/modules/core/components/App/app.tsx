@@ -2,11 +2,8 @@ import * as React from "react";
 import { Switch } from "react-router";
 import styled from "styled-components";
 import { bindActionCreators, Dispatch } from "redux";
-import {
-  onGlobalNavClick,
-  GlobalNavAction
-} from "../../../../actions/globalnav";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { onGlobalNavClick } from "../../../../actions/globalnav";
+import { BrowserRouter, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { GlobalState } from "../../../../reducer";
 import GlobalNav from "../../../core/components/designsystem/atoms/GlobalNav";

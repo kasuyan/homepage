@@ -37,7 +37,7 @@ module.exports = {
 };
 
 if (!isProd) {
-  console.log("__dirname=", __dirname)
+  console.log("__dirname=", __dirname);
   module.exports.serve = {
     content: [__dirname],
     add: (app, middleware, options) => {

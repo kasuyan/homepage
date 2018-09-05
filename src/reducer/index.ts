@@ -1,4 +1,4 @@
-import { GlobalNavAction, onGlobalNavClick } from "../actions/globalnav";
+import { GlobalNavAction } from "../actions/globalnav";
 
 export interface GlobalState {
   target: string;
